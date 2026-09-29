@@ -1,6 +1,7 @@
+import { createElement } from './utils/dom.js';
+
 const init = () => {
-  const app = document.createElement('div');
-  app.className = 'app';
+  const app = createElement('div', { className: 'app' });
   document.body.prepend(app);
 };
 
