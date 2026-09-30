@@ -12,7 +12,17 @@ export const createGame = ({ board, counters, onWin }) => {
     counters.update({ moves: state.moves, pairs: state.pairs });
   };
 
+  const clearMismatchTimer = () => {
+    if (state.timerId !== null) {
+      clearTimeout(state.timerId);
+      state.timerId = null;
+    }
+
+    state.locked = false;
+  };
+
   const start = () => {
+    clearMismatchTimer();
     state = createState(createDeck());
     board.render(state.deck);
     updateCounters();

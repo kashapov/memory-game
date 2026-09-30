@@ -10,20 +10,23 @@ import { addResult } from './storage/leaderboard.js';
 import { CARDS } from './data/cards.js';
 
 const init = () => {
-  const header = createHeader({
-    onNewGame: () => {},
-    onLeaderboard: () => openLeaderboardModal({ modal }),
-  });
   const counters = createCounters(CARDS.length);
   const board = createBoard({ onCardClick: (index) => game.handleCardClick(index) });
   const main = createElement('main', { className: 'main' }, [counters.element, board.element]);
-  const app = createElement('div', { className: 'app' }, [header, main]);
+  const app = createElement('div', { className: 'app' }, []);
   const modal = createModal({ appRoot: app });
 
   const startNewGame = () => {
     modal.close();
     game.start();
   };
+
+  const header = createHeader({
+    onNewGame: startNewGame,
+    onLeaderboard: () => openLeaderboardModal({ modal }),
+  });
+
+  app.append(header, main);
 
   const game = createGame({
     board,
