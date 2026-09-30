@@ -15,7 +15,10 @@ body {
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.4;
   color: #1f2330;
-  background: #f3f4f8;
+  background:
+    radial-gradient(circle at top left, #dbe4ff 0, transparent 45%),
+    radial-gradient(circle at bottom right, #fff0c2 0, transparent 40%),
+    #f3f4f8;
 }
 
 button {
@@ -43,15 +46,17 @@ img {
   padding: 16px 24px;
   background: #2c3e8f;
   color: #fff;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 15%);
 }
 
 .header__title {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: clamp(1.25rem, 3vw, 1.5rem);
 }
 
 .header__controls {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
@@ -62,11 +67,17 @@ img {
   background: #ffc947;
   color: #1f2330;
   font-weight: 600;
-  transition: background 0.2s;
+  transition:
+    background 0.2s,
+    transform 0.15s;
 }
 
 .button:hover {
   background: #ffb703;
+}
+
+.button:active {
+  transform: scale(0.97);
 }
 
 .button:focus-visible {
@@ -79,13 +90,15 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  padding: 24px 16px;
+  gap: 20px;
+  padding: 24px 16px 40px;
 }
 
 .counters {
   display: flex;
-  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 24px;
 }
 
 .counter {
@@ -105,8 +118,8 @@ img {
 
 .board {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(8px, 2vw, 12px);
   width: min(100%, 480px);
 }
 
@@ -118,11 +131,22 @@ img {
   background: transparent;
 }
 
+.card:focus-visible {
+  outline: 3px solid #2c3e8f;
+  outline-offset: 3px;
+}
+
 .card__inner {
   position: relative;
   display: block;
   width: 100%;
   height: 100%;
+  transition: transform 0.25s ease;
+}
+
+.card--open .card__inner,
+.card--matched .card__inner {
+  transform: rotateY(180deg);
 }
 
 .card__face {
@@ -131,23 +155,59 @@ img {
   width: 100%;
   height: 100%;
   border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 12%);
+  transition: opacity 0.15s ease;
+}
+
+.card__face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .card__face--front {
-  visibility: hidden;
+  opacity: 0;
+  transform: rotateY(180deg);
 }
 
-.card--open .card__face--front {
-  visibility: visible;
+.card--open .card__face--front,
+.card--matched .card__face--front {
+  opacity: 1;
 }
 
-.card--open .card__face--back {
-  visibility: hidden;
+.card--open .card__face--back,
+.card--matched .card__face--back {
+  opacity: 0;
+}
+
+.card--matched .card__face {
+  box-shadow:
+    0 0 0 3px #2a9d8f,
+    0 2px 8px rgb(0 0 0 / 12%);
 }
 
 .card--open,
 .card--matched {
   cursor: default;
+}
+
+.card--matched {
+  animation: match-pop 0.35s ease;
+}
+
+@keyframes match-pop {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.06);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .no-scroll {
@@ -163,6 +223,7 @@ img {
   justify-content: center;
   padding: 16px;
   background: rgb(15 20 40 / 65%);
+  animation: fade-in 0.2s ease;
 }
 
 .modal-overlay--visible {
@@ -178,6 +239,7 @@ img {
   background: #fff;
   box-shadow: 0 10px 30px rgb(0 0 0 / 25%);
   text-align: center;
+  animation: modal-in 0.25s ease;
 }
 
 .modal:focus {
@@ -233,4 +295,44 @@ img {
 
 .modal__button--secondary:hover {
   background: #d3d6e3;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 12px 16px;
+  }
+
+  .main {
+    padding: 16px 12px 32px;
+  }
+
+  .board {
+    width: 100%;
+  }
+
+  .counter {
+    font-size: 1rem;
+  }
 }

@@ -4,15 +4,17 @@ import { CARD_BACK } from '../data/cards.js';
 const HIDDEN_LABEL = 'Hidden card';
 
 const createCard = (card, index, onCardClick) => {
-  const back = createElement('img', {
-    className: 'card__face card__face--back',
-    attrs: { src: CARD_BACK, alt: '', draggable: 'false' },
-  });
+  const back = createElement('span', { className: 'card__face card__face--back' }, [
+    createElement('img', {
+      attrs: { src: CARD_BACK, alt: '', draggable: 'false' },
+    }),
+  ]);
 
-  const front = createElement('img', {
-    className: 'card__face card__face--front',
-    attrs: { src: card.image, alt: '', draggable: 'false' },
-  });
+  const front = createElement('span', { className: 'card__face card__face--front' }, [
+    createElement('img', {
+      attrs: { src: card.image, alt: '', draggable: 'false' },
+    }),
+  ]);
 
   const inner = createElement('span', { className: 'card__inner' }, [back, front]);
 
