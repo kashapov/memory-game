@@ -44,8 +44,15 @@ export const createGame = ({ board, counters }) => {
     }, MISMATCH_DELAY_MS);
   };
 
+  const canOpen = (index) =>
+    !state.locked &&
+    index >= 0 &&
+    index < state.deck.length &&
+    !state.opened.includes(index) &&
+    !state.matched.has(index);
+
   const handleCardClick = (index) => {
-    if (state.locked || state.opened.includes(index)) {
+    if (!canOpen(index)) {
       return;
     }
 

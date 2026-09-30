@@ -144,3 +144,8 @@ img {
 .card--open .card__face--back {
   visibility: hidden;
 }
+
+.card--open,
+.card--matched {
+  cursor: default;
+}
