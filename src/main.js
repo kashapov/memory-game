@@ -1,0 +1,44 @@
+import { createElement } from './utils/dom.js';
+import { createHeader } from './ui/header.js';
+import { createBoard } from './ui/board.js';
+import { createCounters } from './ui/counters.js';
+import { createModal } from './ui/modal.js';
+import { openWinModal } from './ui/winModal.js';
+import { openLeaderboardModal } from './ui/leaderboardModal.js';
+import { createGame } from './game/game.js';
+import { addResult } from './storage/leaderboard.js';
+import { CARDS } from './data/cards.js';
+
+const init = () => {
+  const counters = createCounters(CARDS.length);
+  const board = createBoard({ onCardClick: (index) => game.handleCardClick(index) });
+  const main = createElement('main', { className: 'main' }, [counters.element, board.element]);
+  const app = createElement('div', { className: 'app' }, []);
+  const modal = createModal({ appRoot: app });
+
+  const startNewGame = () => {
+    modal.close();
+    game.start();
+  };
+
+  const header = createHeader({
+    onNewGame: startNewGame,
+    onLeaderboard: () => openLeaderboardModal({ modal }),
+  });
+
+  app.append(header, main);
+
+  const game = createGame({
+    board,
+    counters,
+    onWin: ({ moves }) => {
+      addResult(moves);
+      openWinModal({ modal, moves, onNewGame: startNewGame });
+    },
+  });
+
+  document.body.prepend(app);
+  game.start();
+};
+
+init();
