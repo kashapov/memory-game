@@ -4,4 +4,6 @@ export const createState = (deck) => ({
   matched: new Set(),
   moves: 0,
   pairs: 0,
+  locked: false,
+  timerId: null,
 });

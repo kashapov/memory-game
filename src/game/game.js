@@ -1,6 +1,8 @@
 import { createDeck } from './deck.js';
 import { createState } from './state.js';
 
+const MISMATCH_DELAY_MS = 1000;
+
 export const createGame = ({ board, counters }) => {
   let state = createState([]);
 
@@ -26,15 +28,24 @@ export const createGame = ({ board, counters }) => {
       board.markMatched(first);
       board.markMatched(second);
     } else {
-      board.closeCard(first);
-      board.closeCard(second);
+      hideMismatch(first, second);
     }
 
     updateCounters();
   };
 
+  const hideMismatch = (first, second) => {
+    state.locked = true;
+    state.timerId = setTimeout(() => {
+      board.closeCard(first);
+      board.closeCard(second);
+      state.locked = false;
+      state.timerId = null;
+    }, MISMATCH_DELAY_MS);
+  };
+
   const handleCardClick = (index) => {
-    if (state.opened.includes(index)) {
+    if (state.locked || state.opened.includes(index)) {
       return;
     }
 
