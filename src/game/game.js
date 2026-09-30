@@ -1,9 +1,11 @@
 import { createDeck } from './deck.js';
 import { createState } from './state.js';
+import { CARDS } from '../data/cards.js';
 
 const MISMATCH_DELAY_MS = 1000;
+const TOTAL_PAIRS = CARDS.length;
 
-export const createGame = ({ board, counters }) => {
+export const createGame = ({ board, counters, onWin }) => {
   let state = createState([]);
 
   const updateCounters = () => {
@@ -14,6 +16,11 @@ export const createGame = ({ board, counters }) => {
     state = createState(createDeck());
     board.render(state.deck);
     updateCounters();
+  };
+
+  const finish = () => {
+    state.finished = true;
+    onWin?.({ moves: state.moves });
   };
 
   const resolvePair = () => {
@@ -32,6 +39,10 @@ export const createGame = ({ board, counters }) => {
     }
 
     updateCounters();
+
+    if (state.pairs === TOTAL_PAIRS) {
+      finish();
+    }
   };
 
   const hideMismatch = (first, second) => {
@@ -45,6 +56,7 @@ export const createGame = ({ board, counters }) => {
   };
 
   const canOpen = (index) =>
+    !state.finished &&
     !state.locked &&
     index >= 0 &&
     index < state.deck.length &&

@@ -197,6 +197,12 @@ img {
   margin-top: 20px;
 }
 
+.win__message,
+.win__result {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+}
+
 .modal__button--secondary {
   background: #e4e6ef;
 }

@@ -6,4 +6,5 @@ export const createState = (deck) => ({
   pairs: 0,
   locked: false,
   timerId: null,
+  finished: false,
 });
