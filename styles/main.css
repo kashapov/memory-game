@@ -203,6 +203,30 @@ img {
   font-size: 1.1rem;
 }
 
+.leaderboard {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.leaderboard th,
+.leaderboard td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #e4e6ef;
+}
+
+.leaderboard th {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #5c6278;
+}
+
+.leaderboard__empty {
+  margin: 0;
+  color: #5c6278;
+}
+
 .modal__button--secondary {
   background: #e4e6ef;
 }
