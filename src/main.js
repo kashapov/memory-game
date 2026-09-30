@@ -5,6 +5,7 @@ import { createCounters } from './ui/counters.js';
 import { createModal } from './ui/modal.js';
 import { openWinModal } from './ui/winModal.js';
 import { createGame } from './game/game.js';
+import { addResult } from './storage/leaderboard.js';
 import { CARDS } from './data/cards.js';
 
 const init = () => {
@@ -26,7 +27,10 @@ const init = () => {
   const game = createGame({
     board,
     counters,
-    onWin: ({ moves }) => openWinModal({ modal, moves, onNewGame: startNewGame }),
+    onWin: ({ moves }) => {
+      addResult(moves);
+      openWinModal({ modal, moves, onNewGame: startNewGame });
+    },
   });
 
   document.body.prepend(app);
