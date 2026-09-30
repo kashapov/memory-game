@@ -83,6 +83,26 @@ img {
   padding: 24px 16px;
 }
 
+.counters {
+  display: flex;
+  gap: 24px;
+}
+
+.counter {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 10%);
+  font-size: 1.1rem;
+}
+
+.counter__value {
+  font-weight: 700;
+}
+
 .board {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
