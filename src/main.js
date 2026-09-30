@@ -1,15 +1,19 @@
 import { createElement } from './utils/dom.js';
 import { createHeader } from './ui/header.js';
+import { createBoard } from './ui/board.js';
+import { createDeck } from './game/deck.js';
 
 const init = () => {
   const header = createHeader({
     onNewGame: () => {},
     onLeaderboard: () => {},
   });
-  const main = createElement('main', { className: 'main' });
+  const board = createBoard({ onCardClick: () => {} });
+  const main = createElement('main', { className: 'main' }, [board.element]);
   const app = createElement('div', { className: 'app' }, [header, main]);
 
   document.body.prepend(app);
+  board.render(createDeck());
 };
 
 init();
